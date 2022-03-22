@@ -89,7 +89,7 @@ func (d CustomerRepositoryDb) ByStatus(status int) ([]Customer, *errs.AppError) 
 	customers := make([]Customer, 0)
 	err := d.client.Select(&customers, customerSql, status)
 	if err != nil {
-		logger.Error("Error while scaning customer result: " + err.Error())
+		logger.Error("Error while scaning customer result qw: " + err.Error())
 		return nil, errs.NewUnexceptedError("unexpected database error")
 	}
 
