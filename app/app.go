@@ -21,19 +21,26 @@ func Start() {
 
 	router.
 		HandleFunc("/customers", ch.GetAllCustomers).
-		Methods(http.MethodGet)
+		Methods(http.MethodGet).
+		Name("GetAllCustomers")
 	router.
 		HandleFunc("/customers/{customer_id:[0-9]+}", ch.GetCustomer).
-		Methods(http.MethodGet)
+		Methods(http.MethodGet).
+		Name("GetCustomer")
 	router.
 		HandleFunc("/customers/status/{status:[0-9]+}", ch.GetCustomerByStatus).
 		Methods(http.MethodGet)
 	router.
 		HandleFunc("/customers/{customer_id:[0-9]+}/account", ah.NewAccount).
-		Methods(http.MethodPost)
+		Methods(http.MethodPost).
+		Name("NewAccount")
 	router.
 		HandleFunc("/customers/{customer_id:[0-9]+}/account/{account_id}", ah.MakeTransaction).
-		Methods(http.MethodPost)
+		Methods(http.MethodPost).
+		Name("NewTransaction")
+
+	am := AuthMiddleware{domain.NewAuthRepository()}
+	router.Use(am.authorizationHandler())
 	log.Fatal(http.ListenAndServe("localhost:8080", router))
 }
 
